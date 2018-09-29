@@ -10,8 +10,8 @@ The goals / steps of this project are the following:
 * Summarize the results with a written report
 
 Result videos:
-* [Track 1](https://youtu.be/_VuVtFbWExM)
-* [Track 2](https://youtu.be/JmpCGAMWZvs)
+* [Track 1](https://youtu.be/y2FZ-6DJTvg)
+* [Track 2](https://youtu.be/JvrBCiJ-lvQ)
 * [Training data](https://youtu.be/_9vuhSt-49s)
 
 ## Rubric Points
