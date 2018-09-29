@@ -19,6 +19,7 @@ with open('data/driving_log.csv') as csvfile:
 random.shuffle(samples)
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 
+# Generator to generate train and validation data
 def generator(samples, batch_size=32):
     num_samples = len(samples)
     while 1: # Loop forever so the generator never terminates
@@ -57,7 +58,7 @@ train_generator = generator(train_samples, batch_size=16)
 validation_generator = generator(validation_samples, batch_size=16)
 
 from keras.models import Sequential
-from keras.layers import Flatten, Dense, Lambda, Cropping2D
+from keras.layers import Flatten, Dense, Lambda, Cropping2D, Dropout
 from keras.layers import Convolution2D
 from keras.layers import MaxPooling2D
 
@@ -65,10 +66,11 @@ model = Sequential()
 model.add(Lambda(lambda x: x / 255.0 - 0.5, input_shape=(160,320,3)))
 model.add(Cropping2D(cropping=((70, 25), (0, 0))))
 
-#NVIDIA
+#NVIDIA NN structure (like in learning materials)
 model.add(Convolution2D(24, 5, 5, subsample=(2, 2),  activation = "relu"))
 model.add(Convolution2D(36, 5, 5, subsample=(2, 2),  activation = "relu"))
 model.add(Convolution2D(48, 5, 5, subsample=(2, 2),  activation = "relu"))
+model.add(Dropout(0.5))
 model.add(Convolution2D(64, 3, 3, activation = "relu"))
 model.add(Convolution2D(64, 3, 3, activation = "relu"))
 model.add(Flatten())
@@ -77,14 +79,16 @@ model.add(Dense(50))
 model.add(Dense(10))
 model.add(Dense(1))
 
+# Train the model
 model.compile(loss="mse", optimizer='adam')
 model.fit_generator(train_generator,
                     steps_per_epoch = len(train_samples),
                     validation_data = validation_generator,
                     validation_steps = len(validation_samples),
-                    epochs = 2,
+                    epochs = 3,
                     verbose = 1)
 
+# Save the model
 model.save('model.h5')
 exit()
  
